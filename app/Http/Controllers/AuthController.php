@@ -14,29 +14,42 @@ class AuthController extends Controller
 
     public function login(Request $request)
     {
+        // Validasi input
         $credentials = $request->validate([
-            'email'    => 'required|email',
-            'password' => 'required',
+            'email'    => ['required', 'email'],
+            'password' => ['required'],
         ]);
 
+        // Coba login
         if (Auth::attempt($credentials, $request->boolean('remember'))) {
+
             $request->session()->regenerate();
 
-            $redirect = auth()->user()->isAdmin()
-                ? route('admin.dashboard')
-                : route('siswa.dashboard');
+            $user = Auth::user();
 
-            return redirect($redirect);
+            // Cegah error kalau method isAdmin tidak ada
+            if (method_exists($user, 'isAdmin') && $user->isAdmin()) {
+                return redirect()->route('admin.dashboard');
+            }
+
+            return redirect()->route('siswa.dashboard');
         }
 
-        return back()->withErrors(['email' => 'Email atau password salah.'])->onlyInput('email');
+        // Jika gagal login
+        return back()
+            ->withErrors([
+                'email' => 'Email atau password salah.',
+            ])
+            ->onlyInput('email');
     }
 
     public function logout(Request $request)
     {
         Auth::logout();
+
         $request->session()->invalidate();
         $request->session()->regenerateToken();
-        return redirect('/login');
+
+        return redirect()->route('login');
     }
 }
