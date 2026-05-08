@@ -48,7 +48,7 @@
 <body>
 <div class="sidebar">
     <div class="brand"><i class="bi bi-megaphone-fill me-2"></i>Pengaduan Sarana</div>
-    <nav class="flex-grow-1 pt-2">
+    <nav class="flex-grow1 pt-2">
         <div class="nav-section">Menu</div>
         <a href="{{ route('siswa.dashboard') }}" class="nav-link {{ request()->routeIs('siswa.dashboard') ? 'active' : '' }}">
             <i class="bi bi-grid-1x2"></i> Dashboard
