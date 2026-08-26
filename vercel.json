@@ -1,3 +1,28 @@
 {
-  "version": 2
+  "version": 2,
+  "builds": [
+    {
+      "src": "api/index.php",
+      "use": "@vercel/php",
+      "config": {
+        "includeFiles": [
+          "public/**",
+          "resources/**",
+          "routes/**",
+          "config/**",
+          "bootstrap/**",
+          "database/**",
+          "vendor/**",
+          "artisan",
+          ".env.example"
+        ]
+      }
+    }
+  ],
+  "routes": [
+    {
+      "src": "/(.*)",
+      "dest": "api/index.php"
+    }
+  ]
 }
