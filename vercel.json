@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "installCommand": "composer install --no-dev --optimize-autoloader --no-interaction",
+  "installCommand": "php -r \"copy('https://getcomposer.org/installer', 'composer-setup.php');\" && php composer-setup.php --quiet && php composer.phar install --no-dev --optimize-autoloader --no-interaction && rm composer-setup.php",
   "buildCommand": "bash build.sh",
   "builds": [
     {
