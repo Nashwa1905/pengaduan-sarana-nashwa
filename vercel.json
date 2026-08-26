@@ -1,29 +1,12 @@
 {
   "version": 2,
-  "installCommand": "php -r \"copy('https://getcomposer.org/installer', 'composer-setup.php');\" && php composer-setup.php --quiet && php composer.phar install --no-dev --optimize-autoloader --no-interaction && rm composer-setup.php",
-  "buildCommand": "bash build.sh",
-  "builds": [
-    {
-      "src": "api/index.php",
-      "use": "@vercel/php",
-      "config": {
-        "includeFiles": [
-          "public/**",
-          "resources/views/**",
-          "routes/**",
-          "config/**",
-          "bootstrap/**",
-          "database/**",
-          "vendor/**",
-          "artisan"
-        ]
-      }
+  "framework": null,
+  "functions": {
+    "api/index.php": {
+      "runtime": "vercel-php@0.7.3"
     }
-  ],
-  "routes": [
-    {
-      "src": "/(.*)",
-      "dest": "api/index.php"
-    }
+  },
+  "rewrites": [
+    { "source": "/(.*)", "destination": "/api/index.php" }
   ]
 }
