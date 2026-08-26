@@ -2,81 +2,111 @@
 @section('title', 'Detail Aspirasi')
 @section('page-title', 'Detail Aspirasi')
 
+@push('styles')
+<style>
+    /* =========================================
+       TEMA GLOBAL (MENGIKUTI LAYOUT SISWA)
+       ========================================= */
+    h5, h6, .fw-600 {
+        font-family: 'Inter', sans-serif !important;
+        color: #1a202c;
+    }
+
+    .card {
+        border: none !important;
+        border-radius: 12px !important;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05) !important;
+        margin-bottom: 20px;
+    }
+
+    .card-header {
+        border-bottom: 2px solid #e2e8f0 !important;
+        background-color: #ffffff !important;
+        border-radius: 12px 12px 0 0 !important;
+        padding: 20px 25px !important;
+    }
+
+    .card-body {
+        padding: 25px !important;
+    }
+
+    /* Tombol */
+    .btn {
+        border-radius: 10px !important;
+        font-weight: 700 !important;
+        font-size: 14px !important;
+        transition: all 0.3s ease !important;
+        padding: 10px 20px !important;
+    }
+
+    .btn-outline-secondary {
+        border: 2px solid #e2e8f0 !important;
+        color: #4a5568 !important;
+        background-color: white !important;
+    }
+
+    .btn-outline-secondary:hover {
+        background-color: #f7fafc !important;
+        border-color: #cbd5e0 !important;
+        color: #1a202c !important;
+    }
+
+    /* Badge */
+    .badge {
+        padding: 8px 12px !important;
+        border-radius: 50px !important;
+        font-weight: 600 !important;
+        font-size: 12px !important;
+    }
+
+    /* Empty State */
+    .empty-icon {
+        font-size: 3rem !important;
+        color: #cbd5e0 !important;
+        display: block !important;
+        margin-bottom: 10px !important;
+    }
+</style>
+@endpush
+
 @section('content')
 <div class="mb-3">
-    <a href="{{ route('siswa.aspirasi.index') }}" class="btn btn-sm btn-outline-secondary">
+    <a href="{{ route('siswa.aspirasi.index') }}" class="btn btn-outline-secondary btn-sm">
         <i class="bi bi-arrow-left"></i> Kembali
     </a>
 </div>
 
-<div class="row g-3">
-    <div class="col-lg-8">
-        {{-- Detail Aspirasi --}}
-        <div class="card mb-3">
-            <div class="card-body">
-                <div class="d-flex justify-content-between align-items-start mb-3">
-                    <div>
-                        <h5 class="fw-600 mb-1">{{ $aspirasi->title }}</h5>
-                        <div class="text-muted small">
-                            <i class="bi bi-tag me-1"></i>{{ $aspirasi->category->name }}
-                            &nbsp;·&nbsp;
-                            <i class="bi bi-calendar me-1"></i>{{ $aspirasi->created_at->format('d M Y, H:i') }}
-                        </div>
+{{-- Cek apakah data aspirasi ada --}}
+@if(isset($aspirasi) && $aspirasi)
+    <div class="card">
+        <div class="card-body">
+            <div class="d-flex justify-content-between align-items-start mb-3">
+                <div>
+                    <h5 class="fw-bold mb-1">{{ $aspirasi->title }}</h5>
+                    <div class="text-muted small">
+                        <i class="bi bi-tag me-1"></i>{{ $aspirasi->category->name }}
+                        &nbsp;·&nbsp;
+                        <i class="bi bi-calendar me-1"></i>
+                        {{ \Carbon\Carbon::parse($aspirasi->created_at)->translatedFormat('d F Y, H:i') }}
                     </div>
-                    <span class="badge bg-{{ $aspirasi->status_color }} fs-6">{{ $aspirasi->status_label }}</span>
                 </div>
-                <hr>
-                <p class="mb-0" style="white-space: pre-wrap;">{{ $aspirasi->content }}</p>
+                <span class="badge bg-{{ $aspirasi->status_color }} fs-6">{{ $aspirasi->status_label }}</span>
             </div>
-        </div>
-
-        {{-- Umpan Balik dari Admin --}}
-        <div class="card">
-            <div class="card-header bg-white py-3">
-                <h6 class="mb-0 fw-600"><i class="bi bi-chat-square-text me-2"></i>Umpan Balik dari Admin</h6>
-            </div>
-            <div class="card-body">
-                @forelse($aspirasi->feedbacks as $fb)
-                <div class="border rounded p-3 mb-3" style="border-left: 3px solid #0f766e !important;">
-                    <div class="d-flex justify-content-between small text-muted mb-2">
-                        <span><i class="bi bi-person-badge me-1"></i>{{ $fb->admin->name }}</span>
-                        <span>{{ $fb->created_at->format('d M Y, H:i') }}</span>
-                    </div>
-                    <p class="mb-0" style="white-space:pre-wrap;">{{ $fb->message }}</p>
-                </div>
-                @empty
-                <div class="text-center text-muted py-4">
-                    <i class="bi bi-chat-square fs-2 d-block mb-2"></i>
-                    Belum ada umpan balik dari admin.
-                </div>
-                @endforelse
-            </div>
+            <hr>
+            <p class="mb-0" style="white-space: pre-wrap;">{{ $aspirasi->content }}</p>
         </div>
     </div>
-
-    <div class="col-lg-4">
-        {{-- Progres Perbaikan --}}
-        <div class="card">
-            <div class="card-header bg-white py-3">
-                <h6 class="mb-0 fw-600"><i class="bi bi-list-check me-2"></i>Progres Perbaikan</h6>
-            </div>
-            <div class="card-body p-0">
-                @forelse($aspirasi->progressUpdates as $pu)
-                <div class="p-3 border-bottom">
-                    <div class="d-flex justify-content-between align-items-center mb-1">
-                        <span class="badge bg-info text-dark">{{ $pu->stage_label }}</span>
-                        <span class="text-muted" style="font-size:.72rem;">{{ $pu->created_at->format('d M Y') }}</span>
-                    </div>
-                    <p class="mb-0 small" style="white-space:pre-wrap;">{{ $pu->description }}</p>
-                </div>
-                @empty
-                <div class="text-center text-muted py-4 px-3">
-                    <i class="bi bi-hourglass fs-2 d-block mb-2"></i>
-                    Belum ada update progres.
-                </div>
-                @endforelse
-            </div>
+@else
+    {{-- Tampilkan pesan kosong jika data tidak ditemukan --}}
+    <div class="card">
+        <div class="card-body text-center py-5">
+            <i class="bi bi-inbox empty-icon"></i>
+            <h6 class="fw-bold mb-2">Aspirasi Tidak Ditemukan</h6>
+            <p class="text-muted mb-4">Data aspirasi yang Anda cari tidak tersedia atau sudah dihapus.</p>
+            <a href="{{ route('siswa.aspirasi.index') }}" class="btn btn-primary">
+                <i class="bi bi-arrow-left me-1"></i>Kembali ke Daftar Aspirasi
+            </a>
         </div>
     </div>
-</div>
+@endif
 @endsection

@@ -3,230 +3,347 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login — Pengaduan Sarana</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+    <title>Login Sistem Informasi - SMK BPPI</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        :root {
-            color-scheme: light;
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
             font-family: 'Inter', sans-serif;
         }
+
         body {
-            min-height: 100vh;
-            margin: 0;
+            height: 100vh;
+            width: 100vw;
+            overflow: hidden;
+            background: #f4f7f6;
+        }
+
+        /* LAYOUT UTAMA (SPLIT SCREEN) */
+        .main-container {
+            display: flex;
+            height: 100%;
+            width: 100%;
+        }
+
+        /* === BAGIAN KIRI (BRANDING / ILLUSTRATION) === */
+        .left-panel {
+            flex: 1.2;
+            background: linear-gradient(135deg, #0f3057, #00587a, #008891);
+            color: white;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 40px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Dekorasi lingkaran transparan besar di background kiri */
+        .left-panel::before {
+            content: '';
+            position: absolute;
+            width: 500px;
+            height: 500px;
+            background: rgba(255,255,255,0.05);
+            border-radius: 50%;
+            top: -150px;
+            left: -150px;
+        }
+
+        .left-panel::after {
+            content: '';
+            position: absolute;
+            width: 300px;
+            height: 300px;
+            background: rgba(255,255,255,0.05);
+            border-radius: 50%;
+            bottom: -100px;
+            right: -100px;
+        }
+
+        .left-content {
+            position: relative;
+            z-index: 10;
+            text-align: center;
+            max-width: 400px;
+        }
+
+        .left-logo {
+            width: 180px;
+            margin-bottom: 30px;
+            /* Gunakan filter agar logo terlihat menyatu jika backgroundnya putih */
+            filter: drop-shadow(0 10px 15px rgba(0,0,0,0.3));
+            background: rgba(255,255,255,0.95);
+            padding: 10px;
+            border-radius: 20px;
+        }
+
+        .left-panel h1 {
+            font-size: 32px;
+            font-weight: 700;
+            margin-bottom: 10px;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        .left-panel p {
+            font-size: 16px;
+            line-height: 1.6;
+            opacity: 0.9;
+            margin-bottom: 40px;
+        }
+
+        .btn-call {
+            background: rgba(255,255,255,0.2);
+            border: 1px solid rgba(255,255,255,0.4);
+            color: white;
+            padding: 12px 24px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 600;
+            backdrop-filter: blur(5px);
+            transition: 0.3s;
+        }
+
+        .btn-call:hover {
+            background: rgba(255,255,255,0.4);
+        }
+
+        /* === BAGIAN KANAN (FORM LOGIN) === */
+        .right-panel {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
             background: #ffffff;
+            padding: 40px;
+        }
+
+        .login-box {
+            width: 100%;
+            max-width: 380px;
+        }
+
+        .login-mobile-logo {
+            display: none; /* Akan muncul di layar kecil */
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .login-mobile-logo img {
+            width: 100px;
+            background: rgba(255,255,255,0.95);
+            padding: 5px;
+            border-radius: 10px;
+        }
+
+        .login-header {
+            margin-bottom: 30px;
+        }
+
+        .login-header h2 {
+            font-size: 26px;
+            color: #1a202c;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .login-header p {
+            color: #718096;
+            font-size: 14px;
+        }
+
+        /* Input Styling yang Clean */
+        .input-group {
+            margin-bottom: 20px;
+        }
+
+        .input-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-size: 13px;
+            font-weight: 600;
+            color: #4a5568;
+        }
+
+        .input-group input {
+            width: 100%;
+            padding: 14px 16px;
+            border: 2px solid #e2e8f0;
+            border-radius: 10px;
+            font-size: 15px;
+            color: #1a202c;
+            outline: none;
+            transition: 0.3s ease;
+            background: #f7fafc;
+        }
+
+        .input-group input:focus {
+            border-color: #008891;
+            background: #ffffff;
+            box-shadow: 0 0 0 4px rgba(0, 136, 145, 0.1);
+        }
+
+        .input-group input::placeholder {
+            color: #a0aec0;
+        }
+
+        /* Opsi remember me & lupa password */
+        .form-options {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+            font-size: 13px;
+        }
+
+        .remember-me {
             display: flex;
             align-items: center;
-            justify-content: center;
+            gap: 8px;
+            color: #4a5568;
+            cursor: pointer;
         }
-        .page-shell {
-            width: min(100%, 1200px);
-            padding: 2rem;
+
+        .remember-me input[type="checkbox"] {
+            width: 16px;
+            height: 16px;
+            accent-color: #008891;
         }
-        .login-grid {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 1.75rem;
-        }
-        @media (min-width: 992px) {
-            .login-grid {
-                grid-template-columns: 420px 1fr;
-                align-items: center;
-            }
-        }
-        .brand-panel {
-            background: rgba(255, 255, 255, 0.95);
-            border: 1px solid rgba(148, 163, 184, 0.25);
-            border-radius: 30px;
-            padding: 2.5rem;
-            color: #0f172a;
-            box-shadow: 0 40px 120px rgba(15, 23, 42, 0.12);
-        }
-        .brand-panel h1 {
-            font-size: clamp(2rem, 4vw, 3rem);
-            margin-bottom: 1rem;
-            color: #0f172a;
-        }
-        .brand-panel p {
-            color: #475569;
-            line-height: 1.85;
-            margin-bottom: 1.75rem;
-        }
-        .feature-chip {
-            display: inline-flex;
-            gap: 0.75rem;
-            align-items: center;
-            padding: 0.9rem 1.2rem;
-            border-radius: 999px;
-            background: rgba(59, 130, 246, 0.12);
-            color: #1e293b;
-            font-size: 0.95rem;
-            margin-bottom: 1rem;
-        }
-        .login-card {
-            border-radius: 28px;
-            overflow: hidden;
-            box-shadow: 0 45px 120px rgba(15, 23, 42, 0.2);
-            border: 1px solid rgba(148, 163, 184, 0.2);
-            background: #ffffff;
-        }
-        .login-card .card-body {
-            padding: 2.5rem;
-            color: #0f172a;
-        }
-        .login-card .form-control {
-            background: #f8fafc;
-            border: 1px solid #cbd5e1;
-            color: #0f172a;
-            min-height: 3.5rem;
-        }
-        .login-card .form-control::placeholder {
-            color: #94a3b8;
-        }
-        .login-card .form-control:focus {
-            color: #0f172a;
-            background: #ffffff;
-            border-color: #2563eb;
-            box-shadow: 0 0 0 0.2rem rgba(59, 130, 246, 0.18);
-        }
-        .login-card .btn-primary {
-            background: linear-gradient(135deg, #0ea5e9, #4f46e5);
-            border: none;
-            min-height: 3.5rem;
+
+        .forgot-pass {
+            color: #008891;
+            text-decoration: none;
             font-weight: 600;
         }
-        .login-card .btn-primary:hover {
-            background: linear-gradient(135deg, #38bdf8, #6366f1);
+
+        .forgot-pass:hover {
+            text-decoration: underline;
         }
-        .login-icon {
-            width: 3.5rem;
-            height: 3.5rem;
-            display: grid;
-            place-items: center;
-            border-radius: 16px;
-            background: #e0f2fe;
-            margin: 0 auto 1.25rem;
-            color: #0284c7;
+
+        /* Tombol Login */
+        button.submit-btn {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(90deg, #00587a, #008891);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0, 136, 145, 0.3);
+            margin-bottom: 20px;
         }
-        .status-note {
-            border-radius: 14px;
-            padding: 1rem 1.15rem;
-            background: #eff6ff;
-            border: 1px solid #dbeafe;
-            color: #0f172a;
+
+        button.submit-btn:hover {
+            background: linear-gradient(90deg, #004a66, #006e75);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0, 136, 145, 0.4);
         }
-        .login-card hr {
-            border-color: #cbd5e1;
+
+        /* Footer login */
+        .login-footer {
+            text-align: center;
+            font-size: 12px;
+            color: #a0aec0;
         }
-        .demo-credentials {
-            color: #475569;
-            font-size: 0.95rem;
-            line-height: 1.7;
-        }
-        .demo-credentials strong {
-            color: #0f172a;
-        }
-        .accent-badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-            padding: 0.65rem 0.95rem;
-            border-radius: 999px;
-            background: rgba(59, 130, 246, 0.14);
-            color: #bfdbfe;
-            font-size: 0.9rem;
-            margin-top: 1.5rem;
+
+        /* === RESPONSIVE (TAMPILAN HP) === */
+        @media (max-width: 900px) {
+            .left-panel {
+                display: none; /* Sembunyikan panel kiri di HP */
+            }
+            .right-panel {
+                flex: 1;
+                padding: 20px;
+                background: linear-gradient(135deg, #0f3057, #008891);
+            }
+            .login-mobile-logo {
+                display: block;
+            }
+            .login-box {
+                background: white;
+                padding: 40px 30px;
+                border-radius: 20px;
+                box-shadow: 0 15px 30px rgba(0,0,0,0.2);
+            }
         }
     </style>
 </head>
 <body>
-<div class="page-shell">
-    <div class="login-grid">
-        <section class="brand-panel">
-            <span class="feature-chip">
-                <i class="bi bi-lightning-fill"></i>
-                Aplikasi Pengaduan Sarana
-            </span>
-            <h1>Keluhan Sarana Sekolah<br>Menjadi Lebih Cepat & Terstruktur</h1>
-            <p>Lapor masalah fasilitas sekolah, pantau progres perbaikan, dan dapatkan tanggapan langsung dari admin.</p>
-            <div class="accent-badge">
-                <i class="bi bi-shield-lock-fill"></i>
-                Aman & Mudah Digunakan
-            </div>
-        </section>
 
-        <article class="login-card">
-            <div class="card-body">
-                <div class="text-center mb-4">
-                    <div class="login-icon">
-                        <i class="bi bi-megaphone-fill fs-4"></i>
-                    </div>
-                    <h2 class="h4 text-dark mb-2">Masuk ke Akun Anda</h2>
-                    <p class="text-muted mb-0">Gunakan email sekolah dan kata sandi Anda.</p>
+    <div class="main-container">
+        
+        <!-- PANEL KIRI: Branding Sekolah -->
+        <div class="left-panel">
+            <div class="left-content">
+                <!-- Logo di sini -->
+                <img src="{{ asset('logo-smk.jpg') }}" alt="Logo SMK BPPI" class="left-logo">
+                
+                <h1>SMK BPPI Baleendah</h1>
+                <p>Sistem Pengaduan Sarana Terpadu. Kelola keluhan yang ada di sekolah dengan mudah dan efisien.</p>
+                
+                
+            </div>
+        </div>
+
+        <!-- PANEL KANAN: Form Login -->
+        <div class="right-panel">
+            <div class="login-box">
+                
+                <!-- Logo untuk Mobile (Jika layar HP) -->
+                <div class="login-mobile-logo">
+                    <img src="{{ asset('logo-smk.jpg') }}" alt="Logo SMK BPPI">
                 </div>
 
-                @if($errors->any())
-                    <div class="alert alert-danger py-2 small">
-                        <i class="bi bi-exclamation-circle me-1"></i>{{ $errors->first() }}
-                    </div>
-                @endif
+                <div class="login-header">
+                    <h2>Selamat Datang!</h2>
+                    <p>Silakan login untuk mengakses dashboard Anda.</p>
+                </div>
 
-                <form method="POST" action="/login">
+                <form action="{{ route('login') }}" method="POST">
                     @csrf
-                    <div class="mb-3">
-                        <label class="form-label text-muted fw-semibold">Email</label>
-                        <input type="email" name="email" class="form-control @error('email') is-invalid @enderror"
-                               value="{{ old('email') }}" placeholder="contoh@sekolah.id" required autofocus>
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label text-muted fw-semibold">Password</label>
-                        <div class="input-group">
-                            <input type="password" name="password" id="pwdField"
-                                   class="form-control" placeholder="••••••••" required>
-                            <button class="btn btn-outline-secondary text-muted" type="button" onclick="togglePwd()">
-                                <i class="bi bi-eye" id="eyeIcon"></i>
-                            </button>
+                    @if($errors->any())
+                        <div style="background:#fff5f5;color:#c53030;border-left:4px solid #e53e3e;padding:12px 16px;border-radius:8px;margin-bottom:20px;font-size:13px;font-weight:500;">
+                            {{ $errors->first() }}
                         </div>
+                    @endif
+                    <div class="input-group">
+                        <label for="email">Email</label>
+                        <input type="email" id="email" name="email" value="{{ old('email') }}" placeholder="Masukkan email Anda" required>
                     </div>
-                    <div class="d-flex justify-content-between align-items-center mb-4">
-                        <div class="form-check">
-                            <input type="checkbox" name="remember" class="form-check-input" id="remember">
-                            <label class="form-check-label text-muted small" for="remember">Ingat saya</label>
-                        </div>
+
+                    <div class="input-group">
+                        <label for="password">Password</label>
+                        <input type="password" id="password" name="password" placeholder="Masukkan password Anda" required>
                     </div>
-                    <button type="submit" class="btn btn-primary w-100">
-                        <i class="bi bi-box-arrow-in-right me-2"></i>Masuk
-                    </button>
+
+                    <div class="form-options">
+                        <label class="remember-me">
+                            <input type="checkbox" name="remember"> Ingat Saya
+                        </label>
+                        <a href="#" class="forgot-pass">Lupa Password?</a>
+                    </div>
+
+                    <button type="submit" class="submit-btn">Login ke Sistem</button>
                 </form>
 
-                <hr>
-
-                <div class="status-note">
-                    <strong>Info:</strong> Jika belum memiliki akun, hubungi pihak sekolah untuk mendapatkan akses.
-                </div>
-
-                <div class="demo-credentials mt-4 text-center">
-                    <strong>Akun demo</strong><br>
-                    Admin: <strong>admin@gmail.com</strong> / <strong>password</strong><br>
-                    Siswa: <strong>siswa@gmail.com</strong> / <strong>password</strong>
+                <div class="login-footer">
+                    &copy; Pengaduan sarana 2026
                 </div>
             </div>
-        </article>
-    </div>
-</div>
+        </div>
 
-<script>
-function togglePwd() {
-    const f = document.getElementById('pwdField');
-    const i = document.getElementById('eyeIcon');
-    if (f.type === 'password') {
-        f.type = 'text';
-        i.className = 'bi bi-eye-slash';
-    } else {
-        f.type = 'password';
-        i.className = 'bi bi-eye';
-    }
-}
-</script>
+    </div>
+
 </body>
 </html>
