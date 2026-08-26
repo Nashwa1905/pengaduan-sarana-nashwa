@@ -1,6 +1,0 @@
-FROM serversideup/php:8.3-fpm-nginx
-WORKDIR /var/www/html
-COPY . .
-RUN composer install --no-dev --optimize-autoloader
-RUN php artisan config:cache && php artisan route:cache
-EXPOSE 80

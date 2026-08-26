@@ -1,5 +1,7 @@
 {
   "version": 2,
+  "installCommand": "composer install --no-dev --optimize-autoloader --no-interaction",
+  "buildCommand": "bash build.sh",
   "builds": [
     {
       "src": "api/index.php",
@@ -7,14 +9,13 @@
       "config": {
         "includeFiles": [
           "public/**",
-          "resources/**",
+          "resources/views/**",
           "routes/**",
           "config/**",
           "bootstrap/**",
           "database/**",
           "vendor/**",
-          "artisan",
-          ".env.example"
+          "artisan"
         ]
       }
     }
